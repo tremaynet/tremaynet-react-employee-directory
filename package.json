@@ -38,9 +38,10 @@
     "webpack-dev-server": "^2.4.4"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "babel-loader": "^7.0.0",
-    "react": "^15.5.4",
-    "react-dom": "^15.5.4"
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
   },
   "main": "server.js"
 }
