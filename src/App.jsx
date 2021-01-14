@@ -3,6 +3,7 @@ import USERS from "./users";
 
 const App = () => {
   const [sort, setSort] = useState({});
+  const [filter, setFilter] = useState({});
   const formattedUsers = USERS.map((user) => ({
     ...user,
     fullName: `${user.name.first} ${user.name.last}`,
@@ -11,7 +12,17 @@ const App = () => {
     country: user.location.country,
   }));
   const [users, setUsers] = useState(formattedUsers);
-  console.log(formattedUsers);
+
+  useEffect(() => {
+    let users = [...formattedUsers];
+    Object.keys(filter).map((key) => {
+      users = users.filter((user) =>
+        user[key].toString().toLowerCase().includes(filter[key].toLowerCase())
+      );
+    });
+    setSort({});
+    setUsers(users);
+  }, [filter]);
   const sortUsers = (key, order) => {
     const compare = (a, b) => {
       console.log(a[key], b[key]);
@@ -48,94 +59,187 @@ const App = () => {
     color: sort[key] !== undefined && (sort[key] ? "#F00" : "#0F0"),
   });
   return (
-    <table>
-      <tr>
-        <th>
-          <a
-            href="#"
-            style={headerColor("index")}
-            onClick={() => onChangeSort("index")}
-          >
-            Index
-          </a>
-        </th>
-        <th>
-          <a
-            href="#"
-            style={headerColor("fullName")}
-            onClick={() => onChangeSort("fullName")}
-          >
-            Name
-          </a>
-        </th>
-        <th>
-          <a
-            href="#"
-            style={headerColor("gender")}
-            onClick={() => onChangeSort("gender")}
-          >
-            Gender
-          </a>
-        </th>
-        <th>
-          <a
-            href="#"
-            style={headerColor("city")}
-            onClick={() => onChangeSort("city")}
-          >
-            City
-          </a>
-        </th>
-        <th>
-          <a
-            href="#"
-            style={headerColor("state")}
-            onClick={() => onChangeSort("state")}
-          >
-            State
-          </a>
-        </th>
-        <th>
-          <a
-            href="#"
-            style={headerColor("country")}
-            onClick={() => onChangeSort("country")}
-          >
-            Country
-          </a>
-        </th>
-        <th>
-          <a
-            href="#"
-            style={headerColor("email")}
-            onClick={() => onChangeSort("email")}
-          >
-            Email
-          </a>
-        </th>
-        <th>
-          <a
-            href="#"
-            style={headerColor("phone")}
-            onClick={() => onChangeSort("phone")}
-          >
-            Phone
-          </a>
-        </th>
-      </tr>
-      {users.map((user) => (
-        <tr key={user.index}>
-          <td>{user.index}</td>
-          <td>{user.fullName}</td>
-          <td>{user.gender}</td>
-          <td>{user.city}</td>
-          <td>{user.state}</td>
-          <td>{user.country}</td>
-          <td>{user.email}</td>
-          <td>{user.phone}</td>
+    <div>
+      <h1> Users Table </h1>
+      <table>
+        <tr>
+          <th>
+            <a
+              href="#"
+              style={headerColor("index")}
+              onClick={() => onChangeSort("index")}
+            >
+              Index
+            </a>
+          </th>
+          <th>
+            <a
+              href="#"
+              style={headerColor("fullName")}
+              onClick={() => onChangeSort("fullName")}
+            >
+              Name
+            </a>
+          </th>
+          <th>
+            <a
+              href="#"
+              style={headerColor("gender")}
+              onClick={() => onChangeSort("gender")}
+            >
+              Gender
+            </a>
+          </th>
+          <th>
+            <a
+              href="#"
+              style={headerColor("city")}
+              onClick={() => onChangeSort("city")}
+            >
+              City
+            </a>
+          </th>
+          <th>
+            <a
+              href="#"
+              style={headerColor("state")}
+              onClick={() => onChangeSort("state")}
+            >
+              State
+            </a>
+          </th>
+          <th>
+            <a
+              href="#"
+              style={headerColor("country")}
+              onClick={() => onChangeSort("country")}
+            >
+              Country
+            </a>
+          </th>
+          <th>
+            <a
+              href="#"
+              style={headerColor("email")}
+              onClick={() => onChangeSort("email")}
+            >
+              Email
+            </a>
+          </th>
+          <th>
+            <a
+              href="#"
+              style={headerColor("phone")}
+              onClick={() => onChangeSort("phone")}
+            >
+              Phone
+            </a>
+          </th>
         </tr>
-      ))}
-    </table>
+        <tr>
+          <td>
+            <input
+              type="text"
+              onChange={(ev) =>
+                setFilter((prevState) => ({
+                  ...prevState,
+                  index: ev.target.value,
+                }))
+              }
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              onChange={(ev) =>
+                setFilter((prevState) => ({
+                  ...prevState,
+                  fullName: ev.target.value,
+                }))
+              }
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              onChange={(ev) =>
+                setFilter((prevState) => ({
+                  ...prevState,
+                  gender: ev.target.value,
+                }))
+              }
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              onChange={(ev) =>
+                setFilter((prevState) => ({
+                  ...prevState,
+                  city: ev.target.value,
+                }))
+              }
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              onChange={(ev) =>
+                setFilter((prevState) => ({
+                  ...prevState,
+                  state: ev.target.value,
+                }))
+              }
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              onChange={(ev) =>
+                setFilter((prevState) => ({
+                  ...prevState,
+                  country: ev.target.value,
+                }))
+              }
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              onChange={(ev) =>
+                setFilter((prevState) => ({
+                  ...prevState,
+                  email: ev.target.value,
+                }))
+              }
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              onChange={(ev) =>
+                setFilter((prevState) => ({
+                  ...prevState,
+                  phone: ev.target.value,
+                }))
+              }
+            />
+          </td>
+        </tr>
+        {users.map((user) => (
+          <tr key={user.index}>
+            <td>{user.index}</td>
+            <td>{user.fullName}</td>
+            <td>{user.gender}</td>
+            <td>{user.city}</td>
+            <td>{user.state}</td>
+            <td>{user.country}</td>
+            <td>{user.email}</td>
+            <td>{user.phone}</td>
+          </tr>
+        ))}
+      </table>
+    </div>
   );
 };
 
