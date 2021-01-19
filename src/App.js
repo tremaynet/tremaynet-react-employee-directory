@@ -3,7 +3,7 @@ import axios from "axios";
 import logo from './logo.svg';
 import './App.css';
 
-axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+axios.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
 function App() {
   const [sort, setSort] = useState({});
   const [filter, setFilter] = useState({});
@@ -14,15 +14,17 @@ function App() {
     let usersList = [];
     setLoading(true);
     for (let i = 0; i < 20; i++) {
-      const res = await axios.get("https://randomuser.me/api/");
-      const user = res.data.results[0];
-      usersList.push({
-        ...user,
-        fullName: `${user.name.first} ${user.name.last}`,
-        city: user.location.city,
-        state: user.location.state,
-        country: user.location.country,
-      });
+      const res = await axios.get("https://randomuser.me/api/").catch(err => console.log(err));
+      if (res) {
+        const user = res.data.results[0];
+        usersList.push({
+          ...user,
+          fullName: `${user.name.first} ${user.name.last}`,
+          city: user.location.city,
+          state: user.location.state,
+          country: user.location.country,
+        });
+      }
     }
     setLoading(false);
     setLoadedUsers(usersList);
